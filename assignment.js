@@ -2,6 +2,7 @@ let paddle_x, paddle_y, paddle_width, paddle_height, paddle_dx;
 let ball_x, ball_y, ball_diameter, ball_dx, ball_dy;
 let brick_x,brick_y,brick_width,brick_height;
 var brick_visible=true;
+var score=0;
 function setup() {
   createCanvas(400, 400);
   background("black");
@@ -22,7 +23,13 @@ function setup() {
   spawn_brick()
   
 }
-
+function drawScore() {
+    fill("white");
+    textAlign(RIGHT);
+    textSize(10)
+    text("Score: ",35, 10);
+    text(score,43,10)
+}
 function spawn_brick(){
     brick_x = Math.floor(Math.random() * (width - brick_width));
     brick_y = Math.floor(Math.random() * (height - brick_height));
@@ -33,6 +40,7 @@ function draw () {
   background("black");
   if (brick_visible) {
         if (ball_x > brick_x - brick_width/2 && ball_x < brick_x + brick_width && ball_y > brick_y - brick_height/2 && ball_y < brick_y + brick_height) {
+            score = score + 1
             brick_visible = false;
             spawn_brick();
         }
@@ -46,8 +54,8 @@ function draw () {
       ball_dy = -ball_dy;    
     }
   if (ball_y > height){
-    ball_x = width/2
-    ball_y = height/20
+    ball_dx = 0
+    ball_dy = 0
   }
    if(ball_y - (ball_diameter / 2) < 0) {
     ball_dy = -ball_dy;
@@ -62,22 +70,11 @@ function draw () {
     if (keyIsDown(RIGHT_ARROW)) {
     paddle_x = paddle_x + paddle_dx;
   }
- // if((ball_x<paddle_x+paddle_width) && 
- //    (ball_x>paddle_x) && 
- //    (ball_y<paddle_y+(paddle_height / 2))  && 
- //    (ball_y>paddle_y)){
- //   ball_dy=-ball_dy;
- // }
-  
- //   if((ball_x<paddle_x+paddle_width) && 
- //    (ball_x>paddle_x) && 
- //   ball_y + (ball_diameter/2) < (height-25)){
- //   ball_dy=-ball_dy;
- // }
   circle(ball_x, ball_y, ball_diameter);
   rect(paddle_x, paddle_y, paddle_width, paddle_height);
   if (brick_visible){
-    rect(brick_x, brick_y, brick_width, brick_height);   
+    rect(brick_x, brick_y, brick_width, brick_height); 
   }
+  drawScore();
   
 }
